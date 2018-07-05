@@ -1,8 +1,12 @@
-import { LEFT_ARROW_KEYCODE, RIGHT_ARROW_KEYCODE } from './util';
+// import { LEFT_ARROW_KEYCODE, RIGHT_ARROW_KEYCODE } from './util';
+import initialScreen from './levels/stats';
+import '../sass/style.scss';
 
-const templates = document.querySelectorAll('template');
+// const templates = document.querySelectorAll('template');
 const mainView = document.querySelector('main.central');
-
+mainView.innerHTML = '';
+mainView.appendChild(initialScreen.content);
+/*
 const changeView = (number = 0) => {
   if (number < 0 || number > templates.length - 1) {
     return;
@@ -21,3 +25,4 @@ document.addEventListener('keydown', (e) => {
 });
 
 changeView();
+*/

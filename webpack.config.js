@@ -1,10 +1,10 @@
 const PATH = require('path');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PATHS = {
-  source: PATH.join(__dirname, 'src'),
-  build: PATH.join(__dirname, 'build'),
+  source: PATH.join(__dirname, 'js'),
+  build: PATH.join(__dirname, 'build/js'),
 };
 
 const conf = {
@@ -12,19 +12,18 @@ const conf = {
   context: PATHS.source,
 
   entry: {
-    index: './index.js',
-    style: './style.css',
+    index: './main.js',
   },
 
   output: {
     filename: '[name].js',
     path: PATHS.build,
-    publicPath: '/build/', // required for webpack-dev-server
+    publicPath: '/build/js', // required for webpack-dev-server
   },
 
   plugins: [
     new CaseSensitivePathsPlugin(),
-    new ExtractTextPlugin('[name].css'),
+    new MiniCssExtractPlugin({ filename: '../css/style.css' }),
   ],
 
   devServer: {
@@ -39,23 +38,41 @@ const conf = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        }),
-      },
-      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader',
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          // fallback to style-loader in development
+          (process.env.NODE_ENV && process.env.NODE_ENV.trim()) !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: '../img',
+              outputPath: '../img',
+            },
+          },
+        ],
       },
     ],
   },
