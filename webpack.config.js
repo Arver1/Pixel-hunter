@@ -50,7 +50,7 @@ const conf = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
+              sourceMap: true,
             },
           },
           {

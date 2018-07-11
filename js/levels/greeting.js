@@ -1,4 +1,4 @@
-import { getElementFromTemplate } from '../util';
+import { getElementFromTemplate, changeScreen } from '../util';
 
 const template = `<div class="greeting central--blur">
     <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
@@ -24,4 +24,10 @@ const template = `<div class="greeting central--blur">
     </div>
   </footer>`;
 
-export default getElementFromTemplate(template);
+const greetingScreen = getElementFromTemplate(template).content;
+
+greetingScreen.querySelector('[src="img/arrow_right.svg"]').addEventListener('click', () => {
+  console.log('click');
+});
+
+export default greetingScreen;
